@@ -4,5 +4,5 @@ dotenv.config({path:'./config.env'});
 
 
 app.listen(process.env.RUNNING_PORT,function () {
-    console.log("This is from env "+ process.env.RUNNING_PORT)
+    console.log("This Server is running from "+ process.env.RUNNING_PORT + " port")
 });
