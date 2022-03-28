@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const ProductController = require('../controllers/ProductController') 
+const UserController = require('../controllers/UserController') 
+
+//User routes
+router.post('/create-user', UserController.createUser)
+
 
 //product routes
 router.get('/all-product-without-pagination', ProductController.withOutPaginationAllProduct)
