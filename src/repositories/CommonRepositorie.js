@@ -13,12 +13,11 @@ const allItemWithOutPagination = async (modelName) => {
 
 
 //Item all with pagination
-//Note: need extra packeg "mongoose-paginate-v2" and implement related model Schema
+//Note: need extra package "mongoose-paginate-v2" and implement related model Schema
 const allItemWithPagination = async (modelName) => {
   const options = {
     page: 1,
     limit: 5,
-    
   };
  
   const model = await mongoose.models[modelName].paginate({}, options);
