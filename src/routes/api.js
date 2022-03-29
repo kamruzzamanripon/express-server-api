@@ -5,6 +5,7 @@ const UserController = require('../controllers/UserController')
 
 //User routes
 router.post('/create-user', UserController.createUser)
+router.post('/login-user', UserController.loginUser)
 
 
 //product routes

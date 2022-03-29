@@ -9,7 +9,7 @@ module.exports = function checkFields(fields, errors, res) {
         })
         return true;
       }
-      if(fields.password !==fields.confirmation_password){
+      if(fields.confirmation_password && fields.password !==fields.confirmation_password){
         res.status(422).json({
           code: 422,
           message: 'password do not match'

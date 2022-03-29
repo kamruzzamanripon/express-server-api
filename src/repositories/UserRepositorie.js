@@ -1,5 +1,6 @@
 const User = require('../models/User');
-const { hashMaker } = require('../utils/bcrypt');
+const { hashMaker, matchData } = require('../utils/bcrypt');
+const { createToken } = require('../utils/jwt');
 const sendEmail = require('../utils/sendEmail');
 const { save } = require("./CommonRepositorie");
 
@@ -22,4 +23,23 @@ exports.userCreate = async(payload)=>{
     )
    
     return result;
+}
+
+exports.userLogin = async(payload)=>{
+        
+        const { email, password } = payload;
+        
+        const user = await User.findOne({ email }).exec();
+        //return console.log("password", user);
+
+        if (!user) return res.status(401).send(new ErrorResponse(401, 'Email isn\'t registered.'));
+        else if (!matchData(password, user.password)) res.status(401).send(new ErrorResponse(401, 'Password doesn\'t matched.'));
+        else if (!user.active) res.status(401).send(new ErrorResponse(401, 'Your account is deactivated.'));
+        else {
+            const { name, _id, email, phone } = user;
+            const data = {
+                name, _id, email, phone, jwt_token: "Bearer " + createToken({ _id, name, email, phone })
+            }
+            return data;
+        }
 }
