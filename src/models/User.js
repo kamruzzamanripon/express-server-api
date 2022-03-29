@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+//const crypto = require('crypto')
 
 const DataSchema = new mongoose.Schema({
     name: {
@@ -32,8 +33,19 @@ const DataSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: false
+    },
+    resetPasswordToken: {
+        type: String,
+        required: false,
+        default: null
+    },
+    resetPasswordExpire: {
+        type: Date,
+        required: false,
+        default: null
     }
 },{ timestamps: true, versionKey:false })
+
 
 const User = mongoose.model('User', DataSchema, 'users');
 module.exports = User;

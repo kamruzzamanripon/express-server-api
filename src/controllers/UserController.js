@@ -1,9 +1,10 @@
 const User = require("../models/User");
-const { userCreate, userLogin, userInfoGet, userInfoUpdate, userDelete } = require("../repositories/UserRepositorie");
+const { userCreate, userLogin, userInfoGet, userInfoUpdate, userDelete, passwordForgot, resetForgotPassword } = require("../repositories/UserRepositorie");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
 const { decodeToken } = require("../utils/jwt");
 const userIdCheck = require("../utils/userIdCheck");
+const crypto = require('crypto');
 
 //User Registration
 exports.createUser = async (req, res) => {
@@ -152,4 +153,66 @@ exports.deleteUser = async(req, res)=>{
     console.log(error);
     res.status(401).send(new ErrorResponse(401, error.message));
   }
+}
+
+
+// Forgot password to send email to user
+exports.forgotPassword = async(req, res)=>{
+
+    const user = await User.findOne({ email: req.body.email });
+
+    //user mail check
+    if (!user) {
+        return  res.status(404).send(new ErrorResponse(404, 'User not found with this email'))
+    }
+
+    try {
+      const data = await passwordForgot(user);
+      if (data) {
+        return res.status(200).json({
+          code: 200,
+          message: `Email sent to: ${user.email}`,
+          data: data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(new ErrorResponse(500, error.message));
+    }
+   
+}
+
+
+//Forgot password reset
+exports.forgotResetPassword = async(req, res)=>{
+  //get token from url
+  const resetPasswordToken = req.params.token;
+  //query on database token and expiray data
+  const user = await User.findOne({
+      resetPasswordToken:resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+  });
+    
+  //user and password validation
+  if (!user) {
+      return res.status(404).send(new ErrorResponse(400, 'Password reset token is invalid or has been expired'))
+  }
+  if (req.body.password !== req.body.confirmation_password) {
+      return res.status(404).send(new ErrorResponse(400, 'Password does not match'))
+  }
+  
+  try {
+    const data = await resetForgotPassword(user, req);
+    if (data) {
+      return res.status(200).json({
+        code: 200,
+        message: 'Password updated successfully',
+        data: data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(new ErrorResponse(500, error.message));
+  }
+
 }
