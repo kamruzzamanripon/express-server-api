@@ -15,6 +15,7 @@ exports.createUser = async(req, res)=>{
       email: 'Email is required.',
       phone: 'phone is required.',
       password: 'password is required.',
+      confirmation_password: 'confiramation password is required.',
     }
     const isError = checkFields(payload, errors, res);
     if (isError) return;
@@ -32,15 +33,15 @@ exports.createUser = async(req, res)=>{
       if (result[1]) return res.status(413).send(new ErrorResponse(413, 'This phone is already used.'));
        
       
-      //return console.log(phone)
-        const item = await userCreate(payload);
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'User Create Successfully',
-            data:item
-            });
-        }
+      //all is ok, than data/payload pass on database
+      const item = await userCreate(payload);
+      if (item) {
+          return  res.status(200).json({
+          code: 200,
+          message: 'User Create Successfully',
+          data:item
+          });
+      }
        
       } catch (error) {
         res.status(501).json({

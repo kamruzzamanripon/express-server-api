@@ -1,4 +1,5 @@
 module.exports = function checkFields(fields, errors, res) {
+  //return console.log(fields.name)
     for (let field of Object.keys(errors)) {
       if (!fields[field]) {
         res.status(422).json({
@@ -8,6 +9,14 @@ module.exports = function checkFields(fields, errors, res) {
         })
         return true;
       }
+      if(fields.password !==fields.confirmation_password){
+        res.status(422).json({
+          code: 422,
+          message: 'password do not match'
+        })
+        return true;
+      }
     }
+
     return false;
   }
