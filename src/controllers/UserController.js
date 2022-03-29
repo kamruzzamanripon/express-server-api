@@ -1,7 +1,9 @@
 const User = require("../models/User");
-const { userCreate, userLogin } = require("../repositories/UserRepositorie");
+const { userCreate, userLogin, userInfoGet, userInfoUpdate, userDelete } = require("../repositories/UserRepositorie");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
+const { decodeToken } = require("../utils/jwt");
+const userIdCheck = require("../utils/userIdCheck");
 
 //User Registration
 exports.createUser = async (req, res) => {
@@ -35,12 +37,12 @@ exports.createUser = async (req, res) => {
         .send(new ErrorResponse(413, "This phone is already used."));
 
     //all is ok, than data/payload pass on database
-    const item = await userCreate(payload);
-    if (item) {
+    const data = await userCreate(payload);
+    if (data) {
       return res.status(200).json({
         code: 200,
         message: "User Create Successfully",
-        data: item,
+        data: data,
       });
     }
   } catch (error) {
@@ -52,6 +54,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
+//User Login
 exports.loginUser = async (req, res) => {
   let payload = req.body;
 
@@ -65,16 +68,88 @@ exports.loginUser = async (req, res) => {
 
   try {
     //all is ok, than data/payload pass on database
-    const item = await userLogin(payload);
-    if (item) {
+    const data = await userLogin(payload);
+    if (data) {
       return res.status(200).json({
         code: 200,
         message: "User Login Successfully",
-        data: item,
+        data: data,
       });
     }
   } catch (error) {
     console.log(error);
-    res.status(401).send(new ErrorResponse(401, error._message));
+    res.status(401).send(new ErrorResponse(401, error.message));
   }
 };
+
+
+//Single user information
+exports.getInfoUser = async(req, res)=>{
+  const id = req.params.id;
+  
+  try {
+    //all is ok, than data/payload pass on database
+    const data = await userInfoGet(id);
+    if (data) {
+      return res.status(200).json({
+        code: 200,
+        message: "User Login Successfully",
+        data: data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send(new ErrorResponse(401, error.message));
+  }
+}
+
+
+//user update information by user Id
+exports.updateUserInfo = async(req, res)=>{
+  const id = req.params.id;
+  let reqBody = req.body;
+  const payload = {
+      id,
+      reqBody
+  }
+    
+  try {
+    //all is ok, than data/payload pass on database
+    const data = await userInfoUpdate(payload);
+    if (data) {
+      return res.status(200).json({
+        code: 200,
+        message: "User Update Successfully",
+        data: data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send(new ErrorResponse(401, error.message));
+  }
+
+}
+
+
+//user Delete
+exports.deleteUser = async(req, res)=>{
+  const id = req.params.id;
+
+  //User Id check for extra production
+  const authorized =  userIdCheck(id, req, res)
+  if (authorized) return;
+     
+  try {
+    const data = await userDelete(id);
+    if (data) {
+      return res.status(200).json({
+        code: 200,
+        message: "User Delete Successfully",
+        data: data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send(new ErrorResponse(401, error.message));
+  }
+}

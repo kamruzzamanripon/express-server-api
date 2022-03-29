@@ -45,8 +45,9 @@ exports.withPaginationAllProduct = async(req, res)=>{
 //product create
 exports.createProduct = async(req, res)=>{
    
+    let reqBody = req.body;
+    
     try {
-        let reqBody = req.body;
         const item = await productCreate(reqBody);
         if (item) {
             return  res.status(200).json({
@@ -63,15 +64,12 @@ exports.createProduct = async(req, res)=>{
 
 //product update by product Id
 exports.updateProduct = async(req, res)=>{
+
+    const id = req.params.id;
+    let reqBody = req.body;
+    const payload = {id,reqBody}
    
     try {
-        const id = req.params.id;
-        let reqBody = req.body;
-        const payload = {
-            id,
-            reqBody
-        }
-        
         const item = await productUpdate(payload);
         if (item) {
             return  res.status(200).json({
@@ -89,10 +87,9 @@ exports.updateProduct = async(req, res)=>{
 
 //product show by product Id
 exports.singleProduct = async(req, res)=>{
-   
+  
+    const id = req.params.id;
     try {
-        const id = req.params.id;
-              
         const item = await productSingle(id);
         if (item) {
             return  res.status(200).json({
@@ -110,10 +107,9 @@ exports.singleProduct = async(req, res)=>{
 //product Delete by product Id
 exports.deleteProduct = async(req, res)=>{
    
+    const id = req.params.id;
     try {
-        const id = req.params.id;
-              
-        const item = await productDelete(id);
+       const item = await productDelete(id);
         if (item) {
             return  res.status(200).json({
             code: 200,

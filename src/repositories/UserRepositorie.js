@@ -2,7 +2,8 @@ const User = require('../models/User');
 const { hashMaker, matchData } = require('../utils/bcrypt');
 const { createToken } = require('../utils/jwt');
 const sendEmail = require('../utils/sendEmail');
-const { save } = require("./CommonRepositorie");
+const userIdCheck = require('../utils/userIdCheck');
+const { save, getById, update, deleteById } = require("./CommonRepositorie");
 
 const modelName = "User";
 
@@ -25,6 +26,8 @@ exports.userCreate = async(payload)=>{
     return result;
 }
 
+
+//User Login
 exports.userLogin = async(payload)=>{
         
         const { email, password } = payload;
@@ -42,4 +45,33 @@ exports.userLogin = async(payload)=>{
             }
             return data;
         }
+}
+
+
+//Single User information
+//this payload means id
+exports.userInfoGet = async(payload)=>{
+
+    const data = await getById(payload, modelName);
+    const {name, email, phone, photo} = data
+    const result = {
+        name, email, phone, photo
+    }
+    
+    return result;
+}
+
+
+//user information update/Edit
+exports.userInfoUpdate = async(payload)=>{
+    const result = await update(payload, modelName);
+    return result;
+}
+
+
+//user Delete
+//this payload means id
+exports.userDelete = async(payload)=>{
+   const result = await deleteById(payload, modelName);
+    return result;
 }
