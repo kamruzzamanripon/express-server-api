@@ -19,11 +19,8 @@ exports.createUser = async(req, res)=>{
     }
     const isError = checkFields(payload, errors, res);
     if (isError) return;
-    //return console.log(password)
-    
-    
+       
     try {
-      
       //User Email and Phone check on Database. If had than show message
       const result = await Promise.all([
         User.findOne({ email }).lean().exec(),

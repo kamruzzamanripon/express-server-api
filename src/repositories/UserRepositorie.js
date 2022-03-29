@@ -12,14 +12,14 @@ exports.userCreate = async(payload)=>{
     //return console.log(payload)
     const result = await new User({ name, email, phone, active, password: hashMaker(password), photo }).save();
 
-    
-            let emailResponse = await sendEmail(
-                {
-                    email: email,
-                    subject: "Your account is ready ✔",
-                    message: `Password is ${password}`
-                }
-            )
+    //send email confirmation to user
+    let emailResponse = await sendEmail(
+        {
+            email: email,
+            subject: "Your account is ready ✔",
+            message: `Password is ${password}`
+        }
+    )
    
     return result;
 }
