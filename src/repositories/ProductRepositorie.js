@@ -1,4 +1,4 @@
-const ProductModel = require('../models/ProductModel');
+const Product = require('../models/Product');
 const { save, update, getById, deleteById, allItemWithOutPagination, allItemWithPagination } = require("./CommonRepositorie");
 
 
