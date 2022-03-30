@@ -1,5 +1,6 @@
 const express = require('express');
-const router = require('./src/routes/api');
+//const router = require('./src/routes/api');
+const route = require('./src/routes/index');
 const dbConnection = require('./src/utils/dbConnection');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -38,5 +39,6 @@ dbConnection();
 
 
 //common Route url http://localhost:5000/api/v1 
-app.use('/api/v1', router);
+//app.use('/api/v1', router);
+route(app);
 module.exports = app;
