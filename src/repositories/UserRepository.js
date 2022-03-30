@@ -2,13 +2,12 @@ const User = require("../models/User");
 const { hashMaker, matchData } = require("../utils/bcrypt");
 const { createToken } = require("../utils/jwt");
 const sendEmail = require("../utils/sendEmail");
-const { save, getById, update, deleteById } = require("./CommonRepositorie");
 const crypto = require("crypto");
-const CommonRepositorie = require("./CommonRepositorie");
+const CommonRepository = require("./CommonRepository");
 
 const modelName = "User";
 
-module.exports = class UserRepositorie {
+module.exports = class UserRepository {
     
   //User Registration
   static userCreate = async (payload) => {
@@ -67,7 +66,7 @@ module.exports = class UserRepositorie {
   //Single User information
   //this payload means id
   static userInfoGet = async (payload) => {
-    const data = await CommonRepositorie.getById(payload, modelName);
+    const data = await CommonRepository.getById(payload, modelName);
     const { name, email, phone, photo } = data;
     const result = {
       name,
@@ -81,14 +80,14 @@ module.exports = class UserRepositorie {
 
   //user information update/Edit
   static userInfoUpdate = async (payload) => {
-    const result = await CommonRepositorie.update(payload, modelName);
+    const result = await CommonRepository.update(payload, modelName);
     return result;
   };
 
   //user Delete
   //this payload means id
   static userDelete = async (payload) => {
-    const result = await CommonRepositorie.deleteById(payload, modelName);
+    const result = await CommonRepository.deleteById(payload, modelName);
     return result;
   };
 

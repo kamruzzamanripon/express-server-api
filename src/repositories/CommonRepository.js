@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-module.exports = class CommonRepositorie {
+module.exports = class CommonRepository {
   
   //Item all without pagination
   static allItemWithOutPagination = async (modelName) => {

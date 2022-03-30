@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const UserRepositorie = require("../repositories/UserRepositorie");
+const UserRepository = require("../repositories/UserRepository");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
 const userAuthIdCheck = require("../utils/userAuthIdCheck");
@@ -37,7 +37,7 @@ module.exports = class UserController {
           .send(new ErrorResponse(413, "This phone is already used."));
 
       //all is ok, than data/payload pass on database
-      const data = await UserRepositorie.userCreate(payload);
+      const data = await UserRepository.userCreate(payload);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -68,7 +68,7 @@ module.exports = class UserController {
 
     try {
       //all is ok, than data/payload pass on database
-      const data = await UserRepositorie.userLogin(payload);
+      const data = await UserRepository.userLogin(payload);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -88,7 +88,7 @@ module.exports = class UserController {
 
     try {
       //all is ok, than data/payload pass on database
-      const data = await UserRepositorie.userInfoGet(id);
+      const data = await UserRepository.userInfoGet(id);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -113,7 +113,7 @@ module.exports = class UserController {
 
     try {
       //all is ok, than data/payload pass on database
-      const data = await UserRepositorie.userInfoUpdate(payload);
+      const data = await UserRepository.userInfoUpdate(payload);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -136,7 +136,7 @@ module.exports = class UserController {
     if (authorized) return;
 
     try {
-      const data = await UserRepositorie.userDelete(id);
+      const data = await UserRepository.userDelete(id);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -162,7 +162,7 @@ module.exports = class UserController {
     }
 
     try {
-      const data = await UserRepositorie.passwordForgot(user);
+      const data = await UserRepository.passwordForgot(user);
       if (data) {
         return res.status(200).json({
           code: 200,
@@ -204,7 +204,7 @@ module.exports = class UserController {
     }
 
     try {
-      const data = await UserRepositorie.resetForgotPassword(user, req);
+      const data = await UserRepository.resetForgotPassword(user, req);
       if (data) {
         return res.status(200).json({
           code: 200,

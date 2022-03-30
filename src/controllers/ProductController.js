@@ -1,4 +1,4 @@
-const ProductRepositorie = require("../repositories/ProductRepositorie");
+const ProductRepository = require("../repositories/ProductRepository");
 
 
 module.exports = class ProductController {
@@ -6,7 +6,7 @@ module.exports = class ProductController {
   //product all without pagination
   static withOutPaginationAllProduct = async (req, res) => {
     try {
-      const item = await ProductRepositorie.allProductWithOutPagination();
+      const item = await ProductRepository.allProductWithOutPagination();
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -22,7 +22,7 @@ module.exports = class ProductController {
   //product all with pagination
   static withPaginationAllProduct = async (req, res) => {
     try {
-      const item = await ProductRepositorie.allProductWithPagination();
+      const item = await ProductRepository.allProductWithPagination();
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -40,7 +40,7 @@ module.exports = class ProductController {
     let reqBody = req.body;
 
     try {
-      const item = await ProductRepositorie.productCreate(reqBody);
+      const item = await ProductRepository.productCreate(reqBody);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -60,7 +60,7 @@ module.exports = class ProductController {
     const payload = { id, reqBody };
 
     try {
-      const item = await ProductRepositorie.productUpdate(payload);
+      const item = await ProductRepository.productUpdate(payload);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -77,7 +77,7 @@ module.exports = class ProductController {
   static singleProduct = async (req, res) => {
     const id = req.params.id;
     try {
-      const item = await ProductRepositorie.productSingle(id);
+      const item = await ProductRepository.productSingle(id);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -94,7 +94,7 @@ module.exports = class ProductController {
   static deleteProduct = async (req, res) => {
     const id = req.params.id;
     try {
-      const item = await ProductRepositorie.productDelete(id);
+      const item = await ProductRepository.productDelete(id);
       if (item) {
         return res.status(200).json({
           code: 200,
