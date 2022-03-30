@@ -1,12 +1,4 @@
-const {
-  productCreate,
-  productUpdate,
-  productSingle,
-  productDelete,
-  allProductWithOutPagination,
-  allProductWithPagination,
-} = require("../repositories/ProductRepositorie");
-
+const ProductRepositorie = require("../repositories/ProductRepositorie");
 
 
 module.exports = class ProductController {
@@ -14,7 +6,7 @@ module.exports = class ProductController {
   //product all without pagination
   static withOutPaginationAllProduct = async (req, res) => {
     try {
-      const item = await allProductWithOutPagination();
+      const item = await ProductRepositorie.allProductWithOutPagination();
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -30,7 +22,7 @@ module.exports = class ProductController {
   //product all with pagination
   static withPaginationAllProduct = async (req, res) => {
     try {
-      const item = await allProductWithPagination();
+      const item = await ProductRepositorie.allProductWithPagination();
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -48,7 +40,7 @@ module.exports = class ProductController {
     let reqBody = req.body;
 
     try {
-      const item = await productCreate(reqBody);
+      const item = await ProductRepositorie.productCreate(reqBody);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -68,7 +60,7 @@ module.exports = class ProductController {
     const payload = { id, reqBody };
 
     try {
-      const item = await productUpdate(payload);
+      const item = await ProductRepositorie.productUpdate(payload);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -85,7 +77,7 @@ module.exports = class ProductController {
   static singleProduct = async (req, res) => {
     const id = req.params.id;
     try {
-      const item = await productSingle(id);
+      const item = await ProductRepositorie.productSingle(id);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -102,7 +94,7 @@ module.exports = class ProductController {
   static deleteProduct = async (req, res) => {
     const id = req.params.id;
     try {
-      const item = await productDelete(id);
+      const item = await ProductRepositorie.productDelete(id);
       if (item) {
         return res.status(200).json({
           code: 200,
