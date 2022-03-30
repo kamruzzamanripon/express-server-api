@@ -1,125 +1,117 @@
+const {
+  productCreate,
+  productUpdate,
+  productSingle,
+  productDelete,
+  allProductWithOutPagination,
+  allProductWithPagination,
+} = require("../repositories/ProductRepositorie");
 
-const { productCreate, productUpdate, productSingle, productDelete, allProductWithOutPagination, allProductWithPagination } = require('../repositories/ProductRepositorie');
 
 
-//product all without pagination
-exports.withOutPaginationAllProduct = async(req, res)=>{
-   
+module.exports = class ProductController {
+
+  //product all without pagination
+  static withOutPaginationAllProduct = async (req, res) => {
     try {
-                      
-        const item = await allProductWithOutPagination();
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'All Product Show With-out Pagination',
-            data:item
-            });
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await allProductWithOutPagination();
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "All Product Show With-out Pagination",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
 
-
-//product all with pagination
-exports.withPaginationAllProduct = async(req, res)=>{
-   
+  //product all with pagination
+  static withPaginationAllProduct = async (req, res) => {
     try {
-                      
-        const item = await allProductWithPagination();
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'All Product Show With Pagination',
-            data:item
-            });
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await allProductWithPagination();
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "All Product Show With Pagination",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
 
-
-//product create
-exports.createProduct = async(req, res)=>{
-   
+  //product create
+  static createProduct = async (req, res) => {
     let reqBody = req.body;
-    
+
     try {
-        const item = await productCreate(reqBody);
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'Product Create Successfully',
-            data:item
-            });
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await productCreate(reqBody);
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "Product Create Successfully",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
 
-//product update by product Id
-exports.updateProduct = async(req, res)=>{
-
+  //product update by product Id
+  static updateProduct = async (req, res) => {
     const id = req.params.id;
     let reqBody = req.body;
-    const payload = {id,reqBody}
-   
+    const payload = { id, reqBody };
+
     try {
-        const item = await productUpdate(payload);
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'Product Update Successfully',
-            data:item
-            });
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await productUpdate(payload);
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "Product Update Successfully",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
 
-
-//product show by product Id
-exports.singleProduct = async(req, res)=>{
-  
+  //product show by product Id
+  static singleProduct = async (req, res) => {
     const id = req.params.id;
     try {
-        const item = await productSingle(id);
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'Singel Product Show',
-            data:item
-            });
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await productSingle(id);
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "Singel Product Show",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
 
-//product Delete by product Id
-exports.deleteProduct = async(req, res)=>{
-   
+  //product Delete by product Id
+  static deleteProduct = async (req, res) => {
     const id = req.params.id;
     try {
-       const item = await productDelete(id);
-        if (item) {
-            return  res.status(200).json({
-            code: 200,
-            message: 'Product Delete Successfully',
-            data:item
-            });
-          
-        }
-       
-      } catch (error) {
-        return  res.status(400).json({status:"fail", data:error})
+      const item = await productDelete(id);
+      if (item) {
+        return res.status(200).json({
+          code: 200,
+          message: "Product Delete Successfully",
+          data: item,
+        });
       }
-}
+    } catch (error) {
+      return res.status(400).json({ status: "fail", data: error });
+    }
+  };
+};

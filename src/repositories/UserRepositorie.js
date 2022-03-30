@@ -2,7 +2,6 @@ const User = require('../models/User');
 const { hashMaker, matchData } = require('../utils/bcrypt');
 const { createToken } = require('../utils/jwt');
 const sendEmail = require('../utils/sendEmail');
-const userIdCheck = require('../utils/userIdCheck');
 const { save, getById, update, deleteById } = require("./CommonRepositorie");
 const crypto = require('crypto')
 

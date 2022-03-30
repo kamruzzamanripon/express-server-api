@@ -1,6 +1,6 @@
 const { decodeToken } = require("./jwt");
 
-function userIdCheck(id,req, res){
+function userAuthIdCheck(id,req, res){
     //Note: id means user Id.
     
     const token = req.headers.authorization.split(' ')[1];
@@ -16,4 +16,4 @@ function userIdCheck(id,req, res){
     return false;
 }
 
-module.exports = userIdCheck
+module.exports = userAuthIdCheck;

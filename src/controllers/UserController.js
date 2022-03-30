@@ -2,9 +2,10 @@ const User = require("../models/User");
 const { userCreate, userLogin, userInfoGet, userInfoUpdate, userDelete, passwordForgot, resetForgotPassword } = require("../repositories/UserRepositorie");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
-const { decodeToken } = require("../utils/jwt");
-const userIdCheck = require("../utils/userIdCheck");
-const crypto = require('crypto');
+const userAuthIdCheck = require("../utils/userAuthIdCheck");
+
+
+
 
 //User Registration
 exports.createUser = async (req, res) => {
@@ -137,7 +138,7 @@ exports.deleteUser = async(req, res)=>{
   const id = req.params.id;
 
   //User Id check for extra production
-  const authorized =  userIdCheck(id, req, res)
+  const authorized =  userAuthIdCheck(id, req, res)
   if (authorized) return;
      
   try {
