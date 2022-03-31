@@ -4,8 +4,10 @@ const { createToken } = require("../utils/jwt");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const CommonRepository = require("./CommonRepository");
+const fs = require('fs')
 
 const modelName = "User";
+const DIR = './';
 
 module.exports = class UserRepository {
     
@@ -24,11 +26,11 @@ module.exports = class UserRepository {
     }).save();
 
     //send email confirmation to user
-    let emailResponse = await sendEmail({
-      email: email,
-      subject: "Your account is ready ✔",
-      message: `Password is ${password}`,
-    });
+    // let emailResponse = await sendEmail({
+    //   email: email,
+    //   subject: "Your account is ready ✔",
+    //   message: `Password is ${password}`,
+    // });
 
     return result;
   };
@@ -80,16 +82,36 @@ module.exports = class UserRepository {
 
   //user information update/Edit
   static userInfoUpdate = async (payload) => {
-    const result = await CommonRepository.update(payload, modelName);
-    return result;
+    //return console.log(payload.id)
+     //Check user have photo/image. if had then first delete local file then database
+     const userInfo = await CommonRepository.getById(payload.id, modelName);
+     const userPhotoInfo = userInfo.photo;
+    
+     if(userPhotoInfo){
+       fs.unlinkSync(DIR + userPhotoInfo);
+       }
+
+      const result = await CommonRepository.update(payload, modelName);
+      return result;
   };
+
 
   //user Delete
   //this payload means id
   static userDelete = async (payload) => {
+
+    //Check user have photo/image. if had then first delete local file then database
+    const userInfo = await CommonRepository.getById(payload, modelName);
+    const userPhotoInfo = userInfo.photo;
+   
+    if(userPhotoInfo){
+      fs.unlinkSync(DIR + userPhotoInfo);
+      }
+    //return console.log(userPhotoInfo)
     const result = await CommonRepository.deleteById(payload, modelName);
     return result;
   };
+
 
   //Forgot password and send email for password change
   static passwordForgot = async (user) => {

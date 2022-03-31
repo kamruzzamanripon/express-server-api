@@ -3,13 +3,43 @@ const UserRepository = require("../repositories/UserRepository");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
 const userAuthIdCheck = require("../utils/userAuthIdCheck");
+const fs = require("fs");
+const baseUrl = "http://localhost:5000/api/v1";
+const path = require('path')
+
+
+
+
 
 module.exports = class UserController {
+
+  static  download = (req, res) => {
+    //return console.log("hello")
+    const fileName = req.params.name;
+    const __basedir = path.resolve();
+    const directoryPath = __basedir + "/storage/images/user/";
+    res.download(directoryPath + fileName, fileName, (err) => {
+      if (err) {
+        res.status(500).send({
+          message: "Could not download the file. " + err,
+        });
+      }
+    });
+  };
+
+
   //User Registration
   static createUser = async (req, res) => {
     let payload = req.body;
     const { password, phone, email } = payload;
-
+   
+    //Image check if have then include image into payload
+    var imgUrl = '';
+    if(req.file) var imgUrl = `storage/images/user/${req.file.filename}`;
+    payload.photo = imgUrl;
+    
+    
+   //return console.log(imgUrl)
     //Extra input field Check
     const errors = {
       name: "Name is required.",
@@ -37,6 +67,7 @@ module.exports = class UserController {
           .send(new ErrorResponse(413, "This phone is already used."));
 
       //all is ok, than data/payload pass on database
+      
       const data = await UserRepository.userCreate(payload);
       if (data) {
         return res.status(200).json({
@@ -53,6 +84,8 @@ module.exports = class UserController {
       });
     }
   };
+
+
 
   //User Login
   static loginUser = async (req, res) => {
@@ -82,6 +115,8 @@ module.exports = class UserController {
     }
   };
 
+
+
   //Single user information
   static getInfoUser = async (req, res) => {
     const id = req.params.id;
@@ -102,14 +137,19 @@ module.exports = class UserController {
     }
   };
 
+
+
   //user update information by user Id
   static updateUserInfo = async (req, res) => {
     const id = req.params.id;
     let reqBody = req.body;
-    const payload = {
-      id,
-      reqBody,
-    };
+
+    //If File have then push file into reqBody then process update
+    var imgUrl = ''
+    if(req.file) var imgUrl = `storage/images/user/${req.file.filename}`;
+    reqBody.photo = imgUrl
+       
+    const payload = {id, reqBody};
 
     try {
       //all is ok, than data/payload pass on database
@@ -126,6 +166,8 @@ module.exports = class UserController {
       res.status(401).send(new ErrorResponse(401, error.message));
     }
   };
+
+
 
   //user Delete
   static deleteUser = async (req, res) => {
