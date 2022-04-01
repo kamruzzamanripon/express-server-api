@@ -37,10 +37,23 @@ module.exports = class ProductController {
 
   //product create
   static createProduct = async (req, res) => {
-    let reqBody = req.body;
+    let payload = req.body;
+    //return console.log(req.files)
+   
+    //Image Check, if had then all images push into array
+    var imgUrl = [];
+    var images =req.files
+    if(images){
+      for( var i=0; images.length > i; i++){
+        let file = `storage/images/products/${images[i].filename}`;
+        imgUrl.push(file)
+      }
+    }
+    payload.images = imgUrl;
+
 
     try {
-      const item = await ProductRepository.productCreate(reqBody);
+      const item = await ProductRepository.productCreate(payload);
       if (item) {
         return res.status(200).json({
           code: 200,
@@ -57,7 +70,24 @@ module.exports = class ProductController {
   static updateProduct = async (req, res) => {
     const id = req.params.id;
     let reqBody = req.body;
+    
+    //return console.log(payload)
+    //Image Check, if had then all images push into array
+    var imgUrl = [];
+    var images =req.files
+    if(images){
+      for( var i=0; images.length > i; i++){
+        let file = `storage/images/products/${images[i].filename}`;
+        imgUrl.push(file)
+      }
+    }
+    reqBody.images = imgUrl;
+    //return console.log(payload)
+
+    //All data include into payload
     const payload = { id, reqBody };
+
+    //return console.log(payload)
 
     try {
       const item = await ProductRepository.productUpdate(payload);
@@ -72,6 +102,9 @@ module.exports = class ProductController {
       return res.status(400).json({ status: "fail", data: error });
     }
   };
+
+
+
 
   //product show by product Id
   static singleProduct = async (req, res) => {
@@ -90,6 +123,9 @@ module.exports = class ProductController {
     }
   };
 
+
+
+
   //product Delete by product Id
   static deleteProduct = async (req, res) => {
     const id = req.params.id;
@@ -106,4 +142,8 @@ module.exports = class ProductController {
       return res.status(400).json({ status: "fail", data: error });
     }
   };
+
+
+
+  
 };

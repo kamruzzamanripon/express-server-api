@@ -3,29 +3,12 @@ const UserRepository = require("../repositories/UserRepository");
 const { ErrorResponse } = require("../utils/apiResponseMessage");
 const checkFields = require("../utils/checkFields");
 const userAuthIdCheck = require("../utils/userAuthIdCheck");
-const fs = require("fs");
-const baseUrl = "http://localhost:5000/api/v1";
-const path = require('path')
 
 
 
 
 
 module.exports = class UserController {
-
-  static  download = (req, res) => {
-    //return console.log("hello")
-    const fileName = req.params.name;
-    const __basedir = path.resolve();
-    const directoryPath = __basedir + "/storage/images/user/";
-    res.download(directoryPath + fileName, fileName, (err) => {
-      if (err) {
-        res.status(500).send({
-          message: "Could not download the file. " + err,
-        });
-      }
-    });
-  };
 
 
   //User Registration

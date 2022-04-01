@@ -26,11 +26,15 @@ const DataSchema = new mongoose.Schema({
     },
     manufacturingDate: { 
         type: Date, 
-        required: [true, 'Please enter Manufacturing Date'], 
+        required: [false, 'Please enter Manufacturing Date'], 
     },
     expiryDate: { 
         type: Date, 
-        required: [true, 'Please enter Expiry Date'], 
+        required: [false, 'Please enter Expiry Date'], 
+    },
+    images: { 
+        type: Object, 
+        required: [false, 'Please enter Expiry Date'], 
     },
 },{ timestamps: true, versionKey:false })
 

@@ -10,7 +10,7 @@ const storage = (destination)=> multer.diskStorage({
 })
 
 
-const fileUpload = (destination) =>multer({
+const multipleFileUpload = (destination) =>multer({
     storage: storage(destination),
     limits: {
         fileSize:  2 * 1024 * 1024, //2mb,
@@ -28,8 +28,8 @@ const fileUpload = (destination) =>multer({
         return console.log('error', err);
         next(err);
       }
-}).single('image')
+}).array("images", 10);
 
 
 
-module.exports = fileUpload;
+module.exports = multipleFileUpload;
